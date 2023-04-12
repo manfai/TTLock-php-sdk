@@ -1,5 +1,5 @@
 {
-  "name": "hanwenbo/ttlock",
+  "name": "mannfai/ttlock",
   "description": "debug",
   "keywords": [
     "ttlock",
@@ -16,8 +16,8 @@
   },
   "authors": [
     {
-      "name": "韩文博",
-      "email": "9476400@qq.com"
+      "name": "manfai",
+      "email": "iam@manfai.me"
     }
   ],
   "autoload": {
@@ -28,7 +28,7 @@
   "repositories": {
     "packagist": {
       "type": "composer",
-      "url": "https://packagist.laravel-china.org"
+      "url": "https://packagist.org"
     }
   }
 }
