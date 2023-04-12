@@ -3,7 +3,7 @@ php sdk for TTLock
 
 ## Install
 ```bash
-composer require hanwenbo/ttlock
+composer require mannfai/ttlock
 ```
 
 ## 使用
