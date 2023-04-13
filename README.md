@@ -8,7 +8,7 @@ composer require mannfai/ttlock
 
 ## 使用
 ```php
-use hanwenbo\ttlock;
+use mannfai\ttlock;
 ...
 
 $ttlock = new TTLock($clientId,$clientSecret);

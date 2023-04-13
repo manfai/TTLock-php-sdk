@@ -5,7 +5,7 @@
  * License    http://www.fashop.cn
  * link       http://www.fashop.cn
  * Created by FaShop.
- * User: hanwenbo
+ * User: mannfai
  * Date: 2018/1/26
  * Time: 下午5:40
  *
