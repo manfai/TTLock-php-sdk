@@ -20,7 +20,7 @@ class Lock extends TTLockAbstract
 	 */
 	private $accessToken = '';
 
-	public function setAccessToken( string $accessToken ) : void
+	public function setAccessToken( string $accessToken  ) : void
 	{
 		$this->accessToken = $accessToken;
 	}
@@ -28,12 +28,11 @@ class Lock extends TTLockAbstract
 	/**
 	 * @param string $lockData
 	 * @param string $lockAlias
-	 * @param int    $date
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function initialize( string $lockData, string $lockAlias, int $date ) : array
+	public function initialize( string $lockData, string $lockAlias ) : array
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/initialize', [
 			'form_params' => [
@@ -41,7 +40,7 @@ class Lock extends TTLockAbstract
 				'accessToken' => $this->accessToken,
 				'lockData'    => $lockData,
 				'lockAlias'   => $lockAlias,
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -61,7 +60,7 @@ class Lock extends TTLockAbstract
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function list( int $pageNo, int $pageSize, int $date ) : array
+	public function list( int $pageNo, int $pageSize ) : array
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/list', [
 			'form_params' => [
@@ -69,7 +68,7 @@ class Lock extends TTLockAbstract
 				'accessToken' => $this->accessToken,
 				'pageNo'      => $pageNo,
 				'pageSize'    => $pageSize,
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -89,7 +88,7 @@ class Lock extends TTLockAbstract
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function listKey( int $lockId, int $pageNo, int $pageSize, int $date ) : array
+	public function listKey( int $lockId, int $pageNo, int $pageSize ) : array
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/listKey', [
 			'form_params' => [
@@ -98,7 +97,7 @@ class Lock extends TTLockAbstract
 				'lockId'      => $lockId,
 				'pageNo'      => $pageNo,
 				'pageSize'    => $pageSize,
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -112,19 +111,18 @@ class Lock extends TTLockAbstract
 
 	/**
 	 * @param string $lockId
-	 * @param int    $date
 	 * @return bool
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function deleteAllKey( string $lockId, int $date ) : bool
+	public function deleteAllKey( string $lockId ) : bool
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/deleteAllKey', [
 			'form_params' => [
 				'clientId'    => $this->clientId,
 				'accessToken' => $this->accessToken,
 				'lockId'      => $lockId,
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -144,7 +142,7 @@ class Lock extends TTLockAbstract
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function listKeyboardPwd( int $lockId, int $pageNo, int $pageSize, int $date ) : array
+	public function listKeyboardPwd( int $lockId, int $pageNo, int $pageSize ) : array
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/listKeyboardPwd', [
 			'form_params' => [
@@ -153,7 +151,7 @@ class Lock extends TTLockAbstract
 				'lockId'      => $lockId,
 				'pageNo'      => $pageNo,
 				'pageSize'    => $pageSize,
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -167,12 +165,11 @@ class Lock extends TTLockAbstract
 	/**
 	 * @param int    $lockId
 	 * @param string $password
-	 * @param int    $date
 	 * @return bool
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function changeAdminKeyboardPwd( int $lockId, string $password, int $date ) : bool
+	public function changeAdminKeyboardPwd( int $lockId, string $password ) : bool
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/changeAdminKeyboardPwd', [
 			'form_params' => [
@@ -180,7 +177,7 @@ class Lock extends TTLockAbstract
 				'accessToken' => $this->accessToken,
 				'lockId'      => $lockId,
 				'password'    => md5( $password ),
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -194,12 +191,11 @@ class Lock extends TTLockAbstract
 	/**
 	 * @param int    $lockId
 	 * @param string $password
-	 * @param int    $date
 	 * @return bool
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function changeDeletePwd( int $lockId, string $password, int $date ) : bool
+	public function changeDeletePwd( int $lockId, string $password ) : bool
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/changeDeletePwd', [
 			'form_params' => [
@@ -207,7 +203,7 @@ class Lock extends TTLockAbstract
 				'accessToken' => $this->accessToken,
 				'lockId'      => $lockId,
 				'password'    => md5( $password ),
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -221,12 +217,11 @@ class Lock extends TTLockAbstract
 	/**
 	 * @param int    $lockId
 	 * @param string $lockAlias
-	 * @param int    $date
 	 * @return bool
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function rename( int $lockId, string $lockAlias, int $date ) : bool
+	public function rename( int $lockId, string $lockAlias ) : bool
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/rename', [
 			'form_params' => [
@@ -234,7 +229,7 @@ class Lock extends TTLockAbstract
 				'accessToken' => $this->accessToken,
 				'lockId'      => $lockId,
 				'lockAlias'   => $lockAlias,
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -252,14 +247,14 @@ class Lock extends TTLockAbstract
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function resetKey( int $lockId, $date ) : bool
+	public function resetKey( int $lockId, $date  ) : bool
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/resetKey', [
 			'form_params' => [
 				'clientId'    => $this->clientId,
 				'accessToken' => $this->accessToken,
 				'lockId'      => $lockId,
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -274,12 +269,11 @@ class Lock extends TTLockAbstract
 	 * @param int    $lockId
 	 * @param string $pwdInfo
 	 * @param int    $timestamp
-	 * @param int    $date
 	 * @return bool
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function resetKeyboardPwd( int $lockId, string $pwdInfo, int $timestamp, int $date ) : bool
+	public function resetKeyboardPwd( int $lockId, string $pwdInfo, int $timestamp ) : bool
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/resetKeyboardPwd', [
 			'form_params' => [
@@ -287,7 +281,7 @@ class Lock extends TTLockAbstract
 				'accessToken' => $this->accessToken,
 				'lockId'      => $lockId,
 				'pwdInfo'     => $pwdInfo,
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -305,14 +299,14 @@ class Lock extends TTLockAbstract
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function getKeyboardPwdVersion( int $lockId, int $date ) : array
+	public function getKeyboardPwdVersion( int $lockId ) : array
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/getKeyboardPwdVersion', [
 			'form_params' => [
 				'clientId'    => $this->clientId,
 				'accessToken' => $this->accessToken,
 				'lockId'      => $lockId,
-				'date'        => $date,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -331,7 +325,7 @@ class Lock extends TTLockAbstract
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function updateElectricQuantity( int $lockId, int $electricQuantity, int $date ) : bool
+	public function updateElectricQuantity( int $lockId, int $electricQuantity ) : bool
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/updateElectricQuantity', [
 			'form_params' => [
@@ -339,7 +333,7 @@ class Lock extends TTLockAbstract
 				'accessToken'      => $this->accessToken,
 				'lockId'           => $lockId,
 				'electricQuantity' => $electricQuantity,
-				'date'             => $date,
+				'date'             => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -353,12 +347,11 @@ class Lock extends TTLockAbstract
 	/**
 	 * @param string $receiverUsername
 	 * @param string $lockIdList
-	 * @param int    $date
 	 * @return bool
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function transfer( string $receiverUsername, string $lockIdList, int $date ) : bool
+	public function transfer( string $receiverUsername, string $lockIdList ) : bool
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/transfer', [
 			'form_params' => [
@@ -366,7 +359,7 @@ class Lock extends TTLockAbstract
 				'accessToken'      => $this->accessToken,
 				'receiverUsername' => $receiverUsername,
 				'lockIdList'       => $lockIdList,
-				'date'             => $date,
+				'date'             => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
@@ -379,19 +372,41 @@ class Lock extends TTLockAbstract
 	
 	/**
 	 * @param int $lockId
-	 * @param int $date
 	 * @return bool
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author 韩文博
 	 */
-	public function unlock( int $lockId, int $date ) : bool
+	public function unlock( int $lockId ) : bool
 	{
 		$response = $this->client->request( 'POST', '/v3/lock/unlock', [
 			'form_params' => [
 				'clientId'         => $this->clientId,
 				'accessToken'      => $this->accessToken,
 				'lockId'           => $lockId,
-				'date'             => $date,
+				'date'             => number_format(round(microtime(true) * 1000),0,'.','')
+			],
+		] );
+		$body     = json_decode( $response->getBody()->getContents(), true );
+		if( $response->getStatusCode() === 200 && isset( $body['errcode'] ) && $body['errcode'] === 0 ){
+			return true;
+		} else{
+			throw new \Exception( "errcode {$body['errcode']} errmsg {$body['errmsg']} errmsg : {$body['errmsg']}" );
+		}
+	}
+	/**
+	 * @param int $lockId
+	 * @return bool
+	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
+	 * @author 韩文博
+	 */
+	public function lock( int $lockId ) : bool
+	{
+		$response = $this->client->request( 'POST', '/v3/lock/lock', [
+			'form_params' => [
+				'clientId'         => $this->clientId,
+				'accessToken'      => $this->accessToken,
+				'lockId'           => $lockId,
+				'date'             => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
 		$body     = json_decode( $response->getBody()->getContents(), true );
