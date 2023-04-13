@@ -376,4 +376,29 @@ class Lock extends TTLockAbstract
 			throw new \Exception( "errcode {$body['errcode']} errmsg {$body['errmsg']} errmsg : {$body['errmsg']}" );
 		}
 	}
+	
+	/**
+	 * @param int $lockId
+	 * @param int $date
+	 * @return bool
+	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
+	 * @author 韩文博
+	 */
+	public function unlock( int $lockId, int $date ) : bool
+	{
+		$response = $this->client->request( 'POST', '/v3/lock/unlock', [
+			'form_params' => [
+				'clientId'         => $this->clientId,
+				'accessToken'      => $this->accessToken,
+				'lockId'           => $lockId,
+				'date'             => $date,
+			],
+		] );
+		$body     = json_decode( $response->getBody()->getContents(), true );
+		if( $response->getStatusCode() === 200 && isset( $body['errcode'] ) && $body['errcode'] === 0 ){
+			return true;
+		} else{
+			throw new \Exception( "errcode {$body['errcode']} errmsg {$body['errmsg']} errmsg : {$body['errmsg']}" );
+		}
+	}
 }
