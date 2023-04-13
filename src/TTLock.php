@@ -37,10 +37,10 @@ class TTLock
 	private $client;
 
 
-	public function __construct( string $clientId, string $clientSecret )
+	public function __construct( string $clientId = null, string $clientSecret = null )
 	{
-		$this->clientId     = $clientId;
-		$this->clientSecret = $clientSecret;
+		$this->clientId     = env('TTLOCK_CLIENT_ID', $clientId);
+		$this->clientSecret = env('TTLOCK_CLIENT_SECRET', $clientSecret);
 		$this->client       = new \GuzzleHttp\Client( [
 			'base_uri' => 'https://api.sciener.com',
 		] );
