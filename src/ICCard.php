@@ -152,7 +152,7 @@ class ICCard extends TTLockAbstract
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
 	 * @author manfai
 	 */
-	public function addICCard( int $lockId, int $cardId, string $cardName, int $startDate, int $endDate) : array
+	public function add( int $lockId, int $cardId, string $cardName, int $startDate, int $endDate) : array
 	{
 		$response = $this->client->request( 'POST', '/v3/identityCard/addForReversedCardNumber', [
 			'form_params' => [
