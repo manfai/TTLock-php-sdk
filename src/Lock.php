@@ -447,4 +447,25 @@ class Lock extends TTLockAbstract
 			throw new \Exception( "errcode {$body['errcode']} errmsg {$body['errmsg']} errmsg : {$body['errmsg']}" );
 		}
 	}
+
+	public function updateSetting( int $lockId, int $type = 7, int $value) : array
+	{
+		$response = $this->client->request( 'POST', '/v3/lock/updateSetting', [
+			'form_params' => [
+				'clientId'         => $this->clientId,
+				'accessToken'      => $this->accessToken,
+				'lockId'           => $lockId,
+				'type'             => $type,
+				'value'            => $value,
+				'changeType'       => 2,
+				'date'             => number_format(round(microtime(true) * 1000),0,'.','')
+			],
+		] );
+		$body     = json_decode( $response->getBody()->getContents(), true );
+		if( $response->getStatusCode() === 200 && isset( $body['errcode'] )&& $body['errcode']==0){
+			return (array)$body;
+		} else{
+			throw new \Exception( "errcode {$body['errcode']} errmsg {$body['errmsg']} errmsg : {$body['errmsg']}" );
+		}
+	}
 }
