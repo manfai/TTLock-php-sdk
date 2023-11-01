@@ -79,6 +79,25 @@ class Lock extends TTLockAbstract
 		}
 	}
 
+	public function gateways( int $pageNo, int $pageSize ) : array
+	{
+		$response = $this->client->request( 'POST', '/v3/gateway/list', [
+			'form_params' => [
+				'clientId'    => $this->clientId,
+				'accessToken' => $this->accessToken,
+				'pageNo'      => $pageNo,
+				'pageSize'    => $pageSize,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
+			],
+		] );
+		$body     = json_decode( $response->getBody()->getContents(), true );
+		if( $response->getStatusCode() === 200 && !isset( $body['errcode'] ) ){
+			return (array)$body;
+		} else{
+			throw new \Exception( "errcode {$body['errcode']} errmsg {$body['errmsg']} errmsg : {$body['errmsg']}" );
+		}
+	}
+
 	/**
 	 * @param int $lockId
 	 * @param int $pageNo
@@ -176,7 +195,8 @@ class Lock extends TTLockAbstract
 				'clientId'    => $this->clientId,
 				'accessToken' => $this->accessToken,
 				'lockId'      => $lockId,
-				'password'    => md5( $password ),
+				'password'    => $password,
+				'changeType'  => 2,
 				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
 			],
 		] );
