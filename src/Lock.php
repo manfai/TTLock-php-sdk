@@ -98,6 +98,25 @@ class Lock extends TTLockAbstract
 		}
 	}
 
+	public function setGroup( int $lockId, int $groupId ) : array
+	{
+		$response = $this->client->request( 'POST', '/v3/lock/setGroup', [
+			'form_params' => [
+				'clientId'    => $this->clientId,
+				'accessToken' => $this->accessToken,
+				'lockId'      => $lockId,
+				'groupId'     => $groupId,
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
+			],
+		] );
+		$body     = json_decode( $response->getBody()->getContents(), true );
+		if( $response->getStatusCode() === 200 && !isset( $body['errcode'] ) ){
+			return (array)$body;
+		} else{
+			throw new \Exception( "errcode {$body['errcode']} errmsg {$body['errmsg']} errmsg : {$body['errmsg']}" );
+		}
+	}
+	
 	/**
 	 * @param int $lockId
 	 * @param int $pageNo
