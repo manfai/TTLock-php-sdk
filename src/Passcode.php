@@ -60,6 +60,38 @@ class Passcode extends TTLockAbstract
 	}
 
 	/**
+	 * 文档地址：http://open.ttlock.com.cn/doc/api/v3/keyboardPwd/get
+	 * @param int $lockId
+	 * @param int $keyboardPwdVersion
+	 * @param int $keyboardPwdType
+	 * @param int $startDate
+	 * @param int $endDate
+	 * @param int $date
+	 * @return array
+	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
+	 * @author 韩文博
+	 */
+	public function list( int $lockId, int $pageNo, int $pageSize, int $date ) : array
+	{
+		$response = $this->client->request( 'POST', '/v3/lock/listKeyboardPwd', [
+			'form_params' => [
+				'clientId'           => $this->clientId,
+				'accessToken'        => $this->accessToken,
+				'lockId'             => $lockId,
+				'pageNo' 			 => $pageNo,
+				'pageSize'    		 => $pageSize,
+				'date'               => $date,
+			],
+		] );
+		$body     = json_decode( $response->getBody()->getContents(), true );
+		if( $response->getStatusCode() === 200 && !isset( $body['errcode'] ) ){
+			return (array)$body;
+		} else{
+			throw new \Exception( "errcode {$body['errcode']} errmsg {$body['errmsg']} errmsg : {$body['errmsg']}" );
+		}
+	}
+	
+	/**
 	 * @param int $lockId
 	 * @param int $keyboardPwdId
 	 * @param int $deleteType
