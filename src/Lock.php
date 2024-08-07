@@ -280,6 +280,33 @@ class Lock extends TTLockAbstract
 
 	/**
 	 * @param int    $lockId
+	 * @param string $password
+	 * @return bool
+	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
+	 * @author 韩文博
+	 */
+	public function deleteKeyboardPwd( int $lockId, int $keyboardPwdId ) : bool
+	{
+		$response = $this->client->request( 'POST', '/v3/keyboardPwd/delete', [
+			'form_params' => [
+				'clientId'    => $this->clientId,
+				'accessToken' => $this->accessToken,
+				'lockId'      => $lockId,
+				'keyboardPwdId'   => $keyboardPwdId,
+				'deleteType'    => '2',
+				'date'        => number_format(round(microtime(true) * 1000),0,'.','')
+			],
+		] );
+		$body     = json_decode( $response->getBody()->getContents(), true );
+		if( $response->getStatusCode() === 200 && isset( $body['errcode'] ) && $body['errcode'] === 0 ){
+			return true;
+		} else{
+			throw new \Exception( "errcode {$body['errcode']} errmsg {$body['errmsg']} errmsg : {$body['errmsg']}" );
+		}
+	}
+
+	/**
+	 * @param int    $lockId
 	 * @param string $lockAlias
 	 * @return bool
 	 * @throws \GuzzleHttp\Exception\GuzzleException | \Exception
